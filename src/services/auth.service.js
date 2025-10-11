@@ -15,7 +15,7 @@ class AuthService {
         const user_found = await UserRepository.getByEmail(email)
         console.log(user_found)
         if (user_found) {
-            throw new ServerError(400, 'Email ya es uso')
+            throw new ServerError(400, 'Email ya en uso')
         }
         
 
@@ -31,7 +31,7 @@ class AuthService {
             },
             ENVIRONMENT.JWT_SECRET_KEY
         )
-
+        
         //Enviar un mail de verificacion
         await transporter.sendMail({
             from: 'grossrull24@gmail.com',
@@ -40,7 +40,7 @@ class AuthService {
             html: `
             <h1>Hola desde node.js</h1>
             <p>Este es un mail de verificacion</p>
-            <a href='http://localhost:8080/api/auth/verify-email/${verificacion_token}'>Verificar email</a>
+            <a href='${ENVIRONMENT.URL_API_BACKEND}/api/auth/verify-email/${verificacion_token}'>Verificar email</a>
             `
         })
     }
