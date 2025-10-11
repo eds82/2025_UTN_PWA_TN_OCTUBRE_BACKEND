@@ -6,7 +6,7 @@ import workspace_router from "./routes/workspace.route.js";
 
 connectMongoDB()
 
-import express from 'express'
+import express, { request, response } from 'express'
 import auth_router from "./routes/auth.router.js";
 import UserRepository from "./repositories/user.repository.js";
 import cors from 'cors'
@@ -18,6 +18,20 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+app.get('/api/status', (request, response) => {
+    response.send({
+        ok: true,
+        message: 'Esto esta funcionando'
+    })
+})
+
+app.get('/api/ping', (request, response) => {
+    response.send({
+        ok: true,
+        message: 'pong'
+    })
+})
 
 
 app.use('/api/workspace', workspace_router)

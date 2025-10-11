@@ -7,7 +7,8 @@ mongodb://localhost:27017/UTN_TN_SEPTIEMBRE_SLACK
 async function connectMongoDB() {
     try{
         await mongoose.connect(ENVIRONMENT.MONGO_DB_CONNECTION_STRING, {
-            timeoutMS: 60000 //60s
+            timeoutMS: 60000, //60s
+            socketTimeoutMS: 60000
         })
         console.log('Conexion con MongoDB fue exitosa')
     }
