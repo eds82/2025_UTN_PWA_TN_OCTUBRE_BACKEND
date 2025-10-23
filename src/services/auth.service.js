@@ -100,7 +100,8 @@ class AuthService {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                created_at: user.create_at
+                created_at: user.create_at,
+                role: 'user'
             },
             ENVIRONMENT.JWT_SECRET_KEY,
             {

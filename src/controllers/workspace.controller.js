@@ -1,5 +1,6 @@
 //Las funciones que se encargaran de manejar la consulta y la respuesta
 
+import MemberWorkspaceRepository from "../repositories/memberWorkspace.repository.js"
 import WorkspacesRepository from "../repositories/workspace.repository.js"
 import { ServerError } from "../utils/customError.utils.js"
 import { validarId } from "../utils/validations.utils.js"
@@ -7,7 +8,7 @@ import { validarId } from "../utils/validations.utils.js"
 class WorkspaceController {
      static async getAll(request, response) {
         try {
-            const workspaces = await WorkspacesRepository.getAll()
+            const workspaces = await MemberWorkspaceRepository.getAllWorkspacesByUserId(request.user.id)
             response.json(
                 {
                     status: 'OK',
@@ -109,7 +110,7 @@ class WorkspaceController {
             //request.body es donde esta la carga util enviada por el cliente
             //si aplicamos express.json() en nuestra app body siempre sera de tipo objeto
             const name = request.body.name
-            const url_img = request.url_img
+            const url_img = request.body.url_img
             //Validar que name este y que sea valido (por ejemplo un string no VACIO de no mas de 30 caracteres)
             if (!name || typeof (name) !== 'string' || name.length > 30) {
                 throw new ServerError(
@@ -125,7 +126,14 @@ class WorkspaceController {
             }
             else {
                 //Creamos el workspace con el repository
-                await WorkspacesRepository.createWorkspace(name, url_img)
+                const workspace_id_created = await WorkspacesRepository.createWorkspace(name, url_img)
+                if(!workspace_id_created){
+                    throw new ServerError(
+                        500,
+                        'Error al crear el workspace'
+                    )
+                }
+                MemberWorkspaceRepository.create( request.user.id, workspace_id_created, 'admin' )
                 //Si todo salio bien respondemos con {ok: true, message: 'Workspace creado con exito'}
                 return response.status(201).json({
                     ok: true,

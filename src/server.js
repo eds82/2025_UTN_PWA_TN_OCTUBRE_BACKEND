@@ -60,5 +60,7 @@ app.listen(
 
 UserRepository.getById(3)
  */
-UserRepository.getByEmail('grossrull24@gmail.com').then(result => console.log(result))
+//UserRepository.getByEmail('grossrull24@gmail.com').then(result => console.log(result))
 /* UserRepository.deleteById(11).then(console.log) */
+
+MemberWorkspaceRepository.getAllWorkspacesByUserId(1).then(result => console.log(result))
