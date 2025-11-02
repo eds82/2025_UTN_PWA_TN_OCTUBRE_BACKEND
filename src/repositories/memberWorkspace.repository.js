@@ -59,17 +59,20 @@ class MemberWorkspaceRepository {
         const [result] = await pool.execute(query, [user_id])
         return result
     }
-
-
-
+    
 
     static async getMemberWorkspaceByUserIdAndWorkspaceId(user_id, workspace_id){
+        const query = `SELECT * FROM ${MEMBER_WORKSPACE_TABLE.NAME} WHERE ${MEMBER_WORKSPACE_TABLE.COLUMNS.FK_USER} = ? AND ${MEMBER_WORKSPACE_TABLE.COLUMNS.FK_WORKSPACE} = ?`
+        const [result] = await pool.execute(query, [user_id, workspace_id])
+        return result[0]
+    } 
+    
+    
+    /* static async getMemberWorkspaceByUserIdAndWorkspaceId(user_id, workspace_id){
         const member_workspace = await MemberWorkspace.findOne({user: user_id, workspace: workspace_id})
         return member_workspace
     }
-
-
-
+ */
 
     /* static async create (user_id, workspace_id, role = 'member'){
         //Logica de interaccion con la DB para crear el usuario

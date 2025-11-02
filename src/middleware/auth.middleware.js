@@ -18,7 +18,9 @@ const authMiddleware = (request, response, next) => {
 
         const user_data = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET_KEY)    //verifiamos el token y si lo esta se guarda y nos trae el user_data
 
+        //HOT POINT: GUARDE LOS DATOS DE SESION EN LA REQUEST
             request.user = user_data
+            
         next()
     }
     catch (error) {

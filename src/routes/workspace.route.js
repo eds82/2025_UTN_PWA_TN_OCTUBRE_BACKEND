@@ -4,6 +4,7 @@ import { validarId } from "../utils/validations.utils.js"
 import { ServerError } from "../utils/customError.utils.js"
 import WorkspaceController from "../controllers/workspace.controller.js"
 import authMiddleware, { authByRoleMiddleware } from "../middleware/auth.middleware.js"
+import workspaceMiddleware from "../middleware/workspace.middleware.js"
 
 //Manejar todas las consultas referidas a workspace
 
@@ -16,6 +17,12 @@ workspace_router.use(authMiddleware)
 workspace_router.get('/', /* authByRoleMiddleware(['admin', 'user']), */ WorkspaceController.getAll)
 
 workspace_router.get('/:workspace_id', /* authByRoleMiddleware(['admin']), */ WorkspaceController.getById)
+
+workspace_router.post(
+    '/:workspace_id/invite',
+    workspaceMiddleware(['admin']),
+    WorkspaceController.inviteMember
+)
 //Crear el workspaceController con los metodos post, .getById, getAll
 
 //Este es el endpoint para crear workspaces
