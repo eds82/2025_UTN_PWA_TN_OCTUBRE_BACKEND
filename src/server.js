@@ -6,12 +6,13 @@ import workspace_router from "./routes/workspace.route.js";
 
 connectMongoDB()
 
-import express, { request, response } from 'express'
+import express from 'express'
 import auth_router from "./routes/auth.router.js";
 import UserRepository from "./repositories/user.repository.js";
 import cors from 'cors'
 import authMiddleware from "./middleware/auth.middleware.js";
 import MemberWorkspaceRepository from "./repositories/memberWorkspace.repository.js";
+import member_router from "./routes/member.route.js";
 
 
 const app = express()
@@ -36,6 +37,7 @@ app.get('/api/ping', (request, response) => {
 
 app.use('/api/workspace', workspace_router)
 app.use('/api/auth', auth_router)
+app.use('/api/members', member_router)
 
 
 app.get('/ruta-protegida', authMiddleware, (request, response) => {

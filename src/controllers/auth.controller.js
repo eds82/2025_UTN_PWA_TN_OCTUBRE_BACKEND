@@ -1,6 +1,7 @@
 import { json } from "express"
 import AuthService from "../services/auth.service.js"
 import { ServerError } from "../utils/customError.utils.js"
+import ENVIRONMENT from "../config/environment.config.js"
 
 class AuthController {
     static async register(request, response) {
@@ -114,12 +115,7 @@ class AuthController {
             const {verification_token} = request.params
             await AuthService.verifyEmail(verification_token)   // Llamamos a AuthService.verifyEmail y le pasamos el verification_token aguardamos a que esto se resuelva
 
-            return response.json({
-                ok: true,
-                status: 200,
-                message: 'Usuario validado'
-            })
-
+            return response.redirect(ENVIRONMENT.URL_FRONTEND + '/login')
         } catch (error) {
             console.log(error)
             if (error.status) {

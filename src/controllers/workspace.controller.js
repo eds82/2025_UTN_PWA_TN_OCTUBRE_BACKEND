@@ -122,12 +122,12 @@ class WorkspaceController {
                     "el campo 'name' debe ser un string de menos de 30 caracteres"
                 )
             }
-            else if (!url_img || typeof (url_img) !== 'string') {
+           /*  else if (!url_img || typeof (url_img) !== 'string') {
                 throw new ServerError(
                     400,
-                    "el campo 'url_img' debe ser un string de menos de 30 caracteres"
+                    "el campo 'url_img' debe ser un string de menos de 30 caracteres"               //Lo sacamos por un instantes este blocke de codigo
                 )
-            }
+            } */
             else {
                 //Creamos el workspace con el repository
                 const workspace_id_created = await WorkspacesRepository.createWorkspace(name, url_img)
@@ -197,12 +197,12 @@ class WorkspaceController {
                 id_invitador
             } CON JWT
             */
-            const id_inviter = member.id
+            const id_inviter = member._id
             const invite_token = jwt.sign(
                 {
-                    id_invited: user_invited.id,
+                    id_invited: user_invited._id,
                     email_invited: invited_email,
-                    id_workspace: workspace.id,
+                    id_workspace: workspace._id,
                     id_inviter: id_inviter
                 },
                 ENVIRONMENT.JWT_SECRET_KEY,
@@ -221,7 +221,9 @@ class WorkspaceController {
                     subject: 'Invitacion al workspace',
                     html: `<h1>El usuario: ${user.email} te ha enviado una invitación
                             al workspace ${workspace.nombre}<h1/>
-                <a href='${ENVIRONMENT.URL_API_BACKEND}/api/members/confirm-invitation/${invite_token}'>Click para aceptar<a/>`
+                            <a href='${ENVIRONMENT.URL_API_BACKEND}/api/members/confirm-invitation/${invite_token}'>
+                                Click para aceptar
+                            <a/>`
                 }
             )
 
